@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"nuntium/feed"
 	"nuntium/formatter"
+	"nuntium/notifier"
 	"time"
 
 	"github.com/go-co-op/gocron"
@@ -21,7 +22,9 @@ var task = func() {
 			continue
 		}
 
-		fmt.Println(formatter.FormatFeedNews(feedTitle, news))
+		if err = notifier.Send("🤖 Nuntium", formatter.FormatFeedNews(feedTitle, news)); err != nil {
+			fmt.Println(err)
+		}
 	}
 }
 
