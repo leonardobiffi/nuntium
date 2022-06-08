@@ -7,7 +7,7 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-var DiffHours float64 = 48
+var DiffHours float64 = 24
 
 func GetURLs() map[string]string {
 	feedURLs := make(map[string]string)
