@@ -22,6 +22,7 @@ var task = func() {
 			continue
 		}
 
+		notifier.Init()
 		if err = notifier.Send("🤖 Nuntium", formatter.FormatFeedNews(feedTitle, news)); err != nil {
 			fmt.Println(err)
 		}
