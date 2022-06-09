@@ -85,6 +85,6 @@ func main() {
 	scheduleHours := getSchedule()
 	log.Info("Schedule Hours: ", scheduleHours)
 
-	s.Every(int(scheduleHours)).Minutes().Do(task)
+	s.Every(int(scheduleHours)).Hours().Do(task)
 	s.StartBlocking()
 }
