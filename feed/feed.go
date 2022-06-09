@@ -7,8 +7,6 @@ import (
 	"github.com/mmcdole/gofeed"
 )
 
-var DiffHours float64 = 24
-
 func GetURLs() map[string]string {
 	feedURLs := make(map[string]string)
 
@@ -19,7 +17,7 @@ func GetURLs() map[string]string {
 	return feedURLs
 }
 
-func Fetch(feedURL string) (news []entities.News, err error) {
+func Fetch(feedURL string, diffHours float64) (news []entities.News, err error) {
 	fp := gofeed.NewParser()
 	feed, err := fp.ParseURL(feedURL)
 	if err != nil {
@@ -38,7 +36,7 @@ func Fetch(feedURL string) (news []entities.News, err error) {
 			timePublished = *item.PublishedParsed
 		}
 
-		if diff.Hours() <= DiffHours {
+		if diff.Hours() <= diffHours {
 			n := entities.News{
 				Title: item.Title,
 				Link:  item.Link,
@@ -48,7 +46,7 @@ func Fetch(feedURL string) (news []entities.News, err error) {
 			news = append(news, n)
 		}
 
-		if diff.Hours() > DiffHours {
+		if diff.Hours() > diffHours {
 			break
 		}
 	}

@@ -6,6 +6,7 @@ require (
 	github.com/go-co-op/gocron v1.13.0
 	github.com/mmcdole/gofeed v1.1.3
 	github.com/nikoksr/notify v0.27.0
+	github.com/sirupsen/logrus v1.8.1
 )
 
 require (
@@ -21,5 +22,6 @@ require (
 	github.com/technoweenie/multipartstreamer v1.0.1 // indirect
 	golang.org/x/net v0.0.0-20220127200216-cd36cc0744dd // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
+	golang.org/x/sys v0.0.0-20220204135822-1c1b9b1eba6a // indirect
 	golang.org/x/text v0.3.7 // indirect
 )

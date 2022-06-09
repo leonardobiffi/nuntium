@@ -6,17 +6,16 @@ import (
 	"strings"
 )
 
-func FormatFeedNews(title string, news []entities.News) string {
+func FormatFeedNews(title string, news entities.News) (subject, message string) {
 	var body []string
-	body = append(body, fmt.Sprintf("📰 %s", title))
+	body = append(body, "\n")
+	body = append(body, formatNews(news))
 	body = append(body, "\n")
 
-	for _, n := range news {
-		body = append(body, formatNews(n))
-		body = append(body, "\n")
-	}
+	subject = fmt.Sprintf("📰 %s", title)
+	message = strings.Join(body, "\n")
 
-	return strings.Join(body, "\n")
+	return
 }
 
 func formatNews(news entities.News) string {
