@@ -1,20 +1,48 @@
 package feed
 
 import (
+	"io/ioutil"
 	"nuntium/entities"
+	"os"
 	"time"
 
 	"github.com/mmcdole/gofeed"
+	"gopkg.in/yaml.v3"
 )
 
-func GetURLs() map[string]string {
+type Feeds struct {
+	Feeds []Items `yaml:"feeds"`
+}
+
+type Items struct {
+	Name string `yaml:"name"`
+	URL  string `yaml:"url"`
+}
+
+func GetURLs() (feeds map[string]string, err error) {
 	feedURLs := make(map[string]string)
 
-	feedURLs["AWS"] = "https://aws.amazon.com/blogs/aws/feed"
-	feedURLs["Hashicorp"] = "https://www.hashicorp.com/blog/feed.xml"
-	feedURLs["Golang Weekly"] = "https://cprss.s3.amazonaws.com/golangweekly.com.xml"
+	configFile := os.Getenv("CONFIG_FILE")
+	if configFile == "" {
+		configFile = "config.yml"
+	}
 
-	return feedURLs
+	file, err := ioutil.ReadFile(configFile)
+	if err != nil {
+		return
+	}
+
+	var content Feeds
+	err = yaml.Unmarshal(file, &content)
+	if err != nil {
+		return
+	}
+
+	for _, feed := range content.Feeds {
+		feedURLs[feed.Name] = feed.URL
+	}
+
+	return feedURLs, nil
 }
 
 func Fetch(feedURL string, diffHours float64) (news []entities.News, err error) {

@@ -1,0 +1,9 @@
+feeds:
+  - name: AWS
+    url: https://aws.amazon.com/blogs/aws/feed
+  - name: Hashicorp
+    url: https://www.hashicorp.com/blog/feed.xml
+  - name: Golang Weekly
+    url: https://cprss.s3.amazonaws.com/golangweekly.com.xml
+  - name: The Register
+    url: https://www.theregister.com/software/devops/headlines.atom

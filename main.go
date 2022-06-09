@@ -35,12 +35,22 @@ func init() {
 }
 
 var task = func() {
-	notifier.Init()
-
 	skipNotification, _ := strconv.ParseBool(os.Getenv("SKIP_NOTIFICATION"))
 	scheduleHours := getSchedule()
 
-	for feedTitle, feedURL := range feed.GetURLs() {
+	if !skipNotification {
+		notifier.Init()
+	}
+
+	feedURLs, err := feed.GetURLs()
+	if err != nil {
+		log.Error(err)
+		os.Exit(1)
+	}
+
+	log.Debug("Feed URLs: ", feedURLs)
+
+	for feedTitle, feedURL := range feedURLs {
 		log.Info("Fetching news from ", feedTitle)
 		news, err := feed.Fetch(feedURL, scheduleHours)
 		if err != nil {
