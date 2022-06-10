@@ -3,7 +3,6 @@ package feed
 import (
 	"io/ioutil"
 	"nuntium/entities"
-	"os"
 	"time"
 
 	"github.com/mmcdole/gofeed"
@@ -19,15 +18,10 @@ type Items struct {
 	URL  string `yaml:"url"`
 }
 
-func GetURLs() (feeds map[string]string, err error) {
+func GetURLs(filename string) (feeds map[string]string, err error) {
 	feedURLs := make(map[string]string)
 
-	configFile := os.Getenv("CONFIG_FILE")
-	if configFile == "" {
-		configFile = "config.yml"
-	}
-
-	file, err := ioutil.ReadFile(configFile)
+	file, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return
 	}

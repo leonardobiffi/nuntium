@@ -2,16 +2,18 @@ package main
 
 import (
 	"fmt"
+	"nuntium/config"
 	"nuntium/feed"
 	"nuntium/formatter"
 	"nuntium/notifier"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/go-co-op/gocron"
 	"github.com/sirupsen/logrus"
 )
+
+var version = "dev"
 
 // Create a new instance of the logger
 var log = logrus.New()
@@ -26,33 +28,12 @@ func init() {
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
 	log.SetOutput(os.Stdout)
-
-	// Set the log level
-	debugLogLevel, _ := strconv.ParseBool(os.Getenv("DEBUG_LOG_LEVEL"))
-	if debugLogLevel {
-		log.SetLevel(logrus.DebugLevel)
-	}
 }
 
-var task = func() {
-	skipNotification, _ := strconv.ParseBool(os.Getenv("SKIP_NOTIFICATION"))
-	scheduleHours := getSchedule()
-
-	if !skipNotification {
-		notifier.Init()
-	}
-
-	feedURLs, err := feed.GetURLs()
-	if err != nil {
-		log.Error(err)
-		os.Exit(1)
-	}
-
-	log.Debug("Feed URLs: ", feedURLs)
-
-	for feedTitle, feedURL := range feedURLs {
+var task = func(cfg *config.Config) {
+	for feedTitle, feedURL := range cfg.FeedURLs {
 		log.Info("Fetching news from ", feedTitle)
-		news, err := feed.Fetch(feedURL, scheduleHours)
+		news, err := feed.Fetch(feedURL, cfg.Schedule)
 		if err != nil {
 			log.Error(err)
 			continue
@@ -64,8 +45,8 @@ var task = func() {
 
 		for _, n := range news {
 			log.Info(fmt.Sprintf("Title: %s Time: %s", n.Title, n.Time))
-			if skipNotification {
-				log.Debug(formatter.FormatFeedNews(feedTitle, n))
+			if cfg.SkipNotification {
+				fmt.Println(formatter.FormatFeedNews(feedTitle, n))
 				continue
 			}
 
@@ -76,25 +57,21 @@ var task = func() {
 	}
 }
 
-func getSchedule() float64 {
-	// scheduleHours is the number of hours to schedule the task
-	var scheduleHours float64 = 1
+func main() {
+	log.Info("Nuntium version: ", version)
 
-	// Get Schedule Hours from Environment Variable
-	scheduleHoursEnv, _ := strconv.ParseFloat(os.Getenv("SCHEDULE_HOURS"), 64)
-	if scheduleHoursEnv != 0 {
-		scheduleHours = scheduleHoursEnv
+	cfg, err := config.New()
+	if err != nil {
+		log.Error(err)
+		os.Exit(1)
 	}
 
-	return scheduleHours
-}
+	log.Info("Config loaded: ", cfg)
+	if !cfg.SkipNotification {
+		notifier.Init()
+	}
 
-func main() {
 	s := gocron.NewScheduler(time.UTC)
-
-	scheduleHours := getSchedule()
-	log.Info("Schedule Hours: ", scheduleHours)
-
-	s.Every(int(scheduleHours)).Hours().Do(task)
+	s.Every(int(cfg.Schedule)).Hours().Do(task, cfg)
 	s.StartBlocking()
 }
