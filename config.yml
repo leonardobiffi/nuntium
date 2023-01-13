@@ -7,3 +7,6 @@ feeds:
     url: https://cprss.s3.amazonaws.com/golangweekly.com.xml
   - name: The Register
     url: https://www.theregister.com/software/devops/headlines.atom
+  - name: Kubernetes
+    url: https://kubernetes.io/feed.xml
+
