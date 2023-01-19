@@ -6,13 +6,14 @@ import (
 	"os"
 	"strconv"
 
+	"nuntium/logger"
+
 	"github.com/nikoksr/notify"
 	"github.com/nikoksr/notify/service/telegram"
-	"github.com/sirupsen/logrus"
 )
 
 // Create a new instance of the logger
-var log = logrus.New()
+var log = logger.New()
 
 func Init() {
 	// Check if the required environment variables are set.

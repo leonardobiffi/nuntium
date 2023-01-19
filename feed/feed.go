@@ -1,13 +1,18 @@
 package feed
 
 import (
-	"io/ioutil"
+	"fmt"
 	"nuntium/entities"
+	"nuntium/logger"
+	"os"
 	"time"
 
 	"github.com/mmcdole/gofeed"
 	"gopkg.in/yaml.v3"
 )
+
+// Create a new instance of the logger
+var log = logger.New()
 
 type Feeds struct {
 	Feeds []Items `yaml:"feeds"`
@@ -20,10 +25,24 @@ type Items struct {
 
 func GetURLs(filename string) (feeds map[string]string, err error) {
 	feedURLs := make(map[string]string)
+	var file []byte
 
-	file, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return
+	// check if file exists
+	if _, err := os.Stat(filename); os.IsNotExist(err) {
+		data := os.Getenv("CONFIG_VALUE")
+		if data == "" {
+			return nil, fmt.Errorf("config file or config value not found")
+		}
+
+		file = []byte(data)
+		log.Info("Using config value from environment variable")
+	} else {
+		file, err = os.ReadFile(filename)
+		if err != nil {
+			return nil, err
+		}
+
+		log.Info("Using config file")
 	}
 
 	var content Feeds

@@ -5,30 +5,18 @@ import (
 	"nuntium/config"
 	"nuntium/feed"
 	"nuntium/formatter"
+	"nuntium/logger"
 	"nuntium/notifier"
 	"os"
 	"time"
 
 	"github.com/go-co-op/gocron"
-	"github.com/sirupsen/logrus"
 )
 
 var version = "dev"
 
 // Create a new instance of the logger
-var log = logrus.New()
-
-func init() {
-	// Log as logfmt instead of the default ASCII formatter.
-	log.SetFormatter(&logrus.TextFormatter{
-		DisableColors: true,
-		FullTimestamp: true,
-	})
-
-	// Output to stdout instead of the default stderr
-	// Can be any io.Writer, see below for File example
-	log.SetOutput(os.Stdout)
-}
+var log = logger.New()
 
 var task = func(cfg *config.Config) {
 	for feedTitle, feedURL := range cfg.FeedURLs {
