@@ -12,6 +12,15 @@ Telegram Bot written in Golang to send news from RSS Feeds
 docker pull leonardobiffi/nuntium:latest
 ```
 
+## Install Locally
+
+Downloads the app based on your OS/arch and puts it in `/usr/local/bin`.
+Needed [jq](https://stedolan.github.io/jq/download) instaled.
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/leonardobiffi/nuntium/master/scripts/install.sh | sh
+```
+
 ## Environment Variables
 
 | Name              | Description                                 | Default     |
