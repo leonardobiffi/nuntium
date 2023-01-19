@@ -4,6 +4,14 @@
 
 Telegram Bot written in Golang to send news from RSS Feeds
 
+## Docker image
+
+- [Repository in dockerhub](https://hub.docker.com/r/leonardobiffi/nuntium/tags)
+
+```sh
+docker pull leonardobiffi/nuntium:latest
+```
+
 ## Environment Variables
 
 | Name              | Description                           | Default     |
