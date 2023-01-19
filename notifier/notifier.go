@@ -2,14 +2,25 @@ package notifier
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"strconv"
 
 	"github.com/nikoksr/notify"
 	"github.com/nikoksr/notify/service/telegram"
+	"github.com/sirupsen/logrus"
 )
 
+// Create a new instance of the logger
+var log = logrus.New()
+
 func Init() {
+	// Check if the required environment variables are set.
+	if os.Getenv("TELEGRAM_TOKEN") == "" || os.Getenv("TELEGRAM_CHAT_ID") == "" {
+		log.Error(fmt.Errorf("TELEGRAM_TOKEN or TELEGRAM_CHAT_ID not set"))
+		os.Exit(1)
+	}
+
 	// Create a telegram service. Ignoring error for demo simplicity.
 	telegramService, err := telegram.New(os.Getenv("TELEGRAM_TOKEN"))
 	if err != nil {

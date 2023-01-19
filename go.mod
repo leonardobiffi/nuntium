@@ -1,6 +1,6 @@
 module nuntium
 
-go 1.17
+go 1.19
 
 require (
 	github.com/go-co-op/gocron v1.13.0

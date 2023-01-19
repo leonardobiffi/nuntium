@@ -66,7 +66,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	log.Info("Config loaded: ", cfg)
+	log.Info("Config loaded...")
+	for feedTitle := range cfg.FeedURLs {
+		log.Info(fmt.Sprintf("Feed: %s", feedTitle))
+	}
+
 	if !cfg.SkipNotification {
 		notifier.Init()
 	}
