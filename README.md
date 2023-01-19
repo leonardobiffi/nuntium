@@ -27,7 +27,7 @@ curl -fsSL https://raw.githubusercontent.com/leonardobiffi/nuntium/master/script
 |-------------------|---------------------------------------------|-------------|
 | SCHEDULE_HOURS    | Perido of time to check feeds               | 1           |
 | SKIP_NOTIFICATION | Define with will send to Telegram           | false       |
-| CONFIG_FILE       | Filename Feed config file                   | config.yml  |
+| CONFIG_FILE       | Filename Feed config file                   | config.yml  | 
 | CONFIG_VALUE      | Load config Feed from environment variable  |   -         |
 | TELEGRAM_TOKEN    | Token create for Bot                        |   -         |
 | TELEGRAM_CHAT_ID  | Chat id as receiver for our messages        |   -         |
