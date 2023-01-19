@@ -13,8 +13,13 @@ builds:
       - linux
       - windows
       - darwin
-    ignore:
-      - goarch: "386"
+    goarch:
+      - amd64
+      - arm
+      - arm64
+    goarm:
+      - "6"
+      - "7"
 archives:
   - format: zip
 checksum:
